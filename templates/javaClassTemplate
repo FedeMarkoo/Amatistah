@@ -1,0 +1,27 @@
+package actions;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import supers.Servlet;
+
+/**
+ * Servlet implementation class {className} by automatic proces from EditorPage
+ */
+@WebServlet("/{urlPage}")
+public class {className} extends Servlet {
+	private static final long serialVersionUID = 1L;
+
+    /**
+     * Default constructor. 
+     */
+    public {className}() {
+    	super("{jspPath}");
+    }
+
+	@Override
+	public void process(HttpServletRequest request, HttpServletResponse response) {
+		
+	}
+}
