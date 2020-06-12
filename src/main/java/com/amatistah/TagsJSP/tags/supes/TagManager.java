@@ -25,13 +25,12 @@ public abstract class TagManager extends TagSupport {
 		TagManager.mongo = mongo;
 	}
 
-	public static MongoService getDAO() {
+	protected static MongoService getDAO() {
 		return mongo;
 	}
 	
 	protected Request getRequest() {
-		Request request = new Request((HttpServletRequest) pageContext.getRequest());
-		return request;
+		return new Request((HttpServletRequest) pageContext.getRequest());
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public abstract class TagManager extends TagSupport {
 	protected abstract String appendOut();
 
 	protected User getUser() {
-		User user = (User) pageContext.getSession().getAttribute(AmatistaKeys.USER_ATTRIBUTE);
+		User user = (User) getSession().getAttribute(AmatistaKeys.USER_ATTRIBUTE);
 		return user;
 	}
 
