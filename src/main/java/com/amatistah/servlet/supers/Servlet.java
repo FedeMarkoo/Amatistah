@@ -22,7 +22,7 @@ public abstract class Servlet extends HttpServlet {
 		this.path = path;
 	}
 
-	public abstract void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+	public abstract String process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -42,8 +42,7 @@ public abstract class Servlet extends HttpServlet {
 
 	protected void setBody(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher(AmatistaKeys.TEMPLATES_HEADER_JSP).include(request, response);
-		request.getRequestDispatcher(path).include(request, response);
+		request.getRequestDispatcher(AmatistaKeys.TEMPLATES_HEADER).include(request, response);
 	}
 
 	/**

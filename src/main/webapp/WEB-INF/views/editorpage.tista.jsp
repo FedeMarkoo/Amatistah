@@ -1,4 +1,4 @@
-<%@ taglib uri="/tags/tags.tld" prefix="t" %>
+<%@ taglib uri="/WEB-INF/tags.tld" prefix="t" %>
 
 <html lang="es">
 <head>

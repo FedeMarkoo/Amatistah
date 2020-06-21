@@ -8,10 +8,13 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,7 +25,7 @@ import com.amatistah.servlet.supers.Servlet;
  * Servlet implementation class EditorPage
  */
 @Controller
-public class EditorPage extends Servlet {
+public class EditorPage extends Servlet implements ErrorController {
 	private static String javaPath = "C:\\Amatista\\Workspace\\Amatista\\servlet\\actions\\";
 	private static String jspPath = "C:\\Amatista\\Workspace\\Amatista\\WebContent\\";
 	private static String templateJavaPath = "C:\\Amatista\\Workspace\\Amatista\\templates\\javaClassTemplate";
@@ -83,23 +86,28 @@ public class EditorPage extends Servlet {
 		return url.substring(0, 1).toUpperCase() + url.substring(1);
 	}
 
-	@RequestMapping("editorPage")
-	public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@RequestMapping({
+		//"/error", 
+		"/editorPage"})
+	public String process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Request request2 = new Request(request);
-		if (request2.existParameter("isForEdit")) {
-			String url = request.getParameter("url");
-			String xmlData = getJspExistContent(url);
-			request.getSession().setAttribute("xmlData", getBody(xmlData));
-			request.getSession().setAttribute("title", getHeader(xmlData));
-			request.getSession().setAttribute("url", "Amatista/" + url);
-		} else if (request2.existParameter("isForSave")) {
-			String name = request.getParameter("title");
-			String url = request.getParameter("url");
-			String xmlData = request.getParameter("xmlData");
-			generateOrUpdateJavaFile(name, url, xmlData);
+		Integer errorCode = (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+		if (errorCode==null || errorCode == HttpStatus.NOT_FOUND.value()) {
+			if (request2.existParameter("isForEdit")) {
+				String url = request.getParameter("url");
+				String xmlData = getJspExistContent(url);
+				request.getSession().setAttribute("xmlData", getBody(xmlData));
+				request.getSession().setAttribute("title", getHeader(xmlData));
+				request.getSession().setAttribute("url", "Amatista/" + url);
+			} else if (request2.existParameter("isForSave")) {
+				String name = request.getParameter("title");
+				String url = request.getParameter("url");
+				String xmlData = request.getParameter("xmlData");
+				generateOrUpdateJavaFile(name, url, xmlData);
 
+			} 
 		}
-		super.setBody(request, response);
+		return "editorPage.tista";
 	}
 
 	private String getHeader(String xmlData) {
@@ -128,6 +136,11 @@ public class EditorPage extends Servlet {
 			xmlData += fr.nextLine() + "\r\n";
 		fr.close();
 		return xmlData;
+	}
+
+	@Override
+	public String getErrorPath() {
+		return "/error";
 	}
 
 }

@@ -24,8 +24,9 @@ public class Amatista extends Servlet{
 	}
 
 	@GetMapping("/ama.tista")
-	public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		super.setBody(request, response);
+	public String process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//super.setBody(request, response);
+		return "views/main";
 	}
 	
 	
